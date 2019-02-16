@@ -15,15 +15,13 @@ GLFWwindow *window;
 /**************************
 * Customizable functions *
 **************************/
-
-Ball ball1;
 Plane player;
-Cuboid horizon;
+Cuboid lake;
 Arrow direct_player;
 
-float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
+float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0, diff = 10;
 float camera_rotation_angle = 90;
-int window_size = 10, awidth, aheight;
+int window_size = 10, awidth, aheight, sync_arrow = 80, global_timestamp = 0;
 Timer t60(1.0 / 60);
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -60,25 +58,48 @@ void draw() {
 
     // Scene render
     player.draw(VP);
-    direct_player.draw(VP);
-    // horizon.draw(VP);
+    if(direct_player.isdraw)
+        direct_player.draw(VP);
+    lake.draw(VP);
 }
 
 void tick_input(GLFWwindow *window) {
     int forward  = glfwGetKey(window, GLFW_KEY_W);
     int back = glfwGetKey(window, GLFW_KEY_S);
     int up = glfwGetKey(window, GLFW_KEY_SPACE);
+    int down = glfwGetKey(window, GLFW_KEY_DOWN);
     if(forward)
         player.tick(1);
     if(back)
         player.tick(-1);
     if(up)
+    {
         player.tick(2);
+    }
+    if(down)
+    {
+        player.tick(-2);
+    }
 }
 
 void tick_elements() {
-    horizon.position = {player.position.x, player.position.y, player.position.z - 100};
     // camera_rotation_angle += 1;
+    global_timestamp++;
+    if(!direct_player.isdraw && global_timestamp % 300 == 0)
+    {
+        direct_player.isdraw = true;
+        direct_player.position = {player.position.x, player.position.y, player.position.z - 100};
+    }
+    if(global_timestamp % sync_arrow < sync_arrow / 2)
+    {
+        direct_player.tick(-1);
+    }
+    else
+    {
+        direct_player.tick(1);
+    }
+    if(2 * abs(player.position.z - direct_player.position.z) < player.h)
+        direct_player.isdraw = false;
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -86,9 +107,8 @@ void tick_elements() {
 void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
-    ball1       = Ball(0, 0, COLOR_RED);
     player      = Plane({0, 10, 0}, {2, 1, 8}, COLOR_RED);
-    // horizon      = Cuboid({ball1.position.x, ball1.position.y, ball1.position.z - 100}, {300, 300, 1}, -15, COLOR_BLUE);
+    lake      = Cuboid({player.position.x, player.position.y - diff, player.position.z}, {400, 1, 20}, -15, COLOR_BLUE);
     direct_player = Arrow({0, 15, -20}, COLOR_GREEN);
 
     // Create and compile our GLSL program from the shaders
@@ -155,5 +175,5 @@ void reset_screen() {
     float bottom = screen_center_y - window_size / screen_zoom;
     float left   = screen_center_x - window_size / screen_zoom;
     float right  = screen_center_x + window_size / screen_zoom;
-    Matrices.projection = glm::perspective(glm::radians(90.0f), (float)awidth /(float)aheight , 0.1f, 500.0f);
+    Matrices.projection = glm::perspective(glm::radians(80.0f), (float)awidth /(float)aheight , 0.1f, 500.0f);
 }

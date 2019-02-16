@@ -50,17 +50,12 @@ void Arrow::tick(int sn) {
     if(sn == 1)
     {
         //forward
-        this -> position.z -= 0.1;
+        this -> position.y -= 0.05;
     }
     else if(sn == -1)
     {
         //backward
-        this -> position.z += 0.1;
-    }
-    else if(sn == 2)
-    {
-        //up
-        this -> position.y += 0.1;
+        this -> position.y += 0.05;
     }
 }
 
