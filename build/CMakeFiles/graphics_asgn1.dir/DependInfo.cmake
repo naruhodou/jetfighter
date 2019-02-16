@@ -4,13 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/ball.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/ball.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/color.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/color.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/input.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/input.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/main.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/main.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/nonedit.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/other_handlers.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o"
-  "/home/escanor/workarea/graphics/graphics-boilerplate/src/timer.cpp" "/home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/arrow.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/arrow.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/ball.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/ball.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/color.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/color.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/cuboid.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/cuboid.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/input.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/input.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/main.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/main.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/nonedit.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/other_handlers.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/plane.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/plane.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/timer.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

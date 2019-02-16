@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/escanor/workarea/graphics/graphics-boilerplate
+CMAKE_SOURCE_DIR = /home/escanor/workarea/graphics/jetfighter
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/escanor/workarea/graphics/graphics-boilerplate/build
+CMAKE_BINARY_DIR = /home/escanor/workarea/graphics/jetfighter/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles /home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/escanor/workarea/graphics/jetfighter/build/CMakeFiles /home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/escanor/workarea/graphics/graphics-boilerplate/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/escanor/workarea/graphics/jetfighter/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -122,6 +122,33 @@ graphics_asgn1: cmake_check_build_system
 graphics_asgn1/fast:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/build
 .PHONY : graphics_asgn1/fast
+
+src/arrow.o: src/arrow.cpp.o
+
+.PHONY : src/arrow.o
+
+# target to build an object file
+src/arrow.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/arrow.cpp.o
+.PHONY : src/arrow.cpp.o
+
+src/arrow.i: src/arrow.cpp.i
+
+.PHONY : src/arrow.i
+
+# target to preprocess a source file
+src/arrow.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/arrow.cpp.i
+.PHONY : src/arrow.cpp.i
+
+src/arrow.s: src/arrow.cpp.s
+
+.PHONY : src/arrow.s
+
+# target to generate assembly for a file
+src/arrow.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/arrow.cpp.s
+.PHONY : src/arrow.cpp.s
 
 src/ball.o: src/ball.cpp.o
 
@@ -176,6 +203,33 @@ src/color.s: src/color.cpp.s
 src/color.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/color.cpp.s
 .PHONY : src/color.cpp.s
+
+src/cuboid.o: src/cuboid.cpp.o
+
+.PHONY : src/cuboid.o
+
+# target to build an object file
+src/cuboid.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/cuboid.cpp.o
+.PHONY : src/cuboid.cpp.o
+
+src/cuboid.i: src/cuboid.cpp.i
+
+.PHONY : src/cuboid.i
+
+# target to preprocess a source file
+src/cuboid.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/cuboid.cpp.i
+.PHONY : src/cuboid.cpp.i
+
+src/cuboid.s: src/cuboid.cpp.s
+
+.PHONY : src/cuboid.s
+
+# target to generate assembly for a file
+src/cuboid.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/cuboid.cpp.s
+.PHONY : src/cuboid.cpp.s
 
 src/input.o: src/input.cpp.o
 
@@ -285,6 +339,33 @@ src/other_handlers.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.s
 .PHONY : src/other_handlers.cpp.s
 
+src/plane.o: src/plane.cpp.o
+
+.PHONY : src/plane.o
+
+# target to build an object file
+src/plane.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/plane.cpp.o
+.PHONY : src/plane.cpp.o
+
+src/plane.i: src/plane.cpp.i
+
+.PHONY : src/plane.i
+
+# target to preprocess a source file
+src/plane.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/plane.cpp.i
+.PHONY : src/plane.cpp.i
+
+src/plane.s: src/plane.cpp.s
+
+.PHONY : src/plane.s
+
+# target to generate assembly for a file
+src/plane.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/plane.cpp.s
+.PHONY : src/plane.cpp.s
+
 src/timer.o: src/timer.cpp.o
 
 .PHONY : src/timer.o
@@ -321,12 +402,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... graphics_asgn1"
 	@echo "... edit_cache"
+	@echo "... src/arrow.o"
+	@echo "... src/arrow.i"
+	@echo "... src/arrow.s"
 	@echo "... src/ball.o"
 	@echo "... src/ball.i"
 	@echo "... src/ball.s"
 	@echo "... src/color.o"
 	@echo "... src/color.i"
 	@echo "... src/color.s"
+	@echo "... src/cuboid.o"
+	@echo "... src/cuboid.i"
+	@echo "... src/cuboid.s"
 	@echo "... src/input.o"
 	@echo "... src/input.i"
 	@echo "... src/input.s"
@@ -339,6 +426,9 @@ help:
 	@echo "... src/other_handlers.o"
 	@echo "... src/other_handlers.i"
 	@echo "... src/other_handlers.s"
+	@echo "... src/plane.o"
+	@echo "... src/plane.i"
+	@echo "... src/plane.s"
 	@echo "... src/timer.o"
 	@echo "... src/timer.i"
 	@echo "... src/timer.s"

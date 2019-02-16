@@ -1,6 +1,9 @@
 #include "main.h"
 #include "timer.h"
 #include "ball.h"
+#include "plane.h"
+#include "cuboid.h"
+#include "arrow.h"
 
 using namespace std;
 
@@ -14,12 +17,14 @@ GLFWwindow *window;
 **************************/
 
 Ball ball1;
+Plane player;
+Cuboid horizon;
+Arrow direct_player;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
-float camera_rotation_angle = 0;
-
+float camera_rotation_angle = 90;
+int window_size = 10, awidth, aheight;
 Timer t60(1.0 / 60);
-int c;
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
 void draw() {
@@ -32,19 +37,9 @@ void draw() {
     glUseProgram (programID);
 
     // Eye - Location of camera. Don't change unless you are sure!!
-    glm::vec3 eye ( 5*cos(camera_rotation_angle*M_PI/180.0f), 0,  5*sin(camera_rotation_angle*M_PI/180.0f));
-    if(c)
-    {
-        eye.x = -5; eye.z = 10;
-    }
+    glm::vec3 eye (player.position.x, player.position.y + 6, player.position.z + 8);
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
-    glm::vec3 target (0, 0, 0);
-    if(c)
-    {
-        target.x = ball1.position.x + 2;
-        target.y = ball1.position.y + 2;
-        target.z = 1;
-    }
+    glm::vec3 target (player.position.x, player.position.y, player.position.z);
     // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
 
@@ -64,31 +59,25 @@ void draw() {
     glm::mat4 MVP;  // MVP = Projection * View * Model
 
     // Scene render
-    ball1.draw(VP);
+    player.draw(VP);
+    direct_player.draw(VP);
+    // horizon.draw(VP);
 }
 
 void tick_input(GLFWwindow *window) {
-    int left  = glfwGetKey(window, GLFW_KEY_LEFT);
-    int right = glfwGetKey(window, GLFW_KEY_RIGHT);
-    if(c == 0)
-        c = glfwGetKey(window, GLFW_KEY_C);
-    int d = glfwGetKey(window, GLFW_KEY_D);
-    if (left) {
-        // Do something
-        ball1.tick(-1);
-    }
-    if(right)
-    {
-        ball1.tick(1);
-    }
-    if(d)
-    {
-        c = 0;
-    }
+    int forward  = glfwGetKey(window, GLFW_KEY_W);
+    int back = glfwGetKey(window, GLFW_KEY_S);
+    int up = glfwGetKey(window, GLFW_KEY_SPACE);
+    if(forward)
+        player.tick(1);
+    if(back)
+        player.tick(-1);
+    if(up)
+        player.tick(2);
 }
 
 void tick_elements() {
-    ball1.tick(0);
+    horizon.position = {player.position.x, player.position.y, player.position.z - 100};
     // camera_rotation_angle += 1;
 }
 
@@ -97,8 +86,10 @@ void tick_elements() {
 void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
-
     ball1       = Ball(0, 0, COLOR_RED);
+    player      = Plane({0, 10, 0}, {2, 1, 8}, COLOR_RED);
+    // horizon      = Cuboid({ball1.position.x, ball1.position.y, ball1.position.z - 100}, {300, 300, 1}, -15, COLOR_BLUE);
+    direct_player = Arrow({0, 15, -20}, COLOR_GREEN);
 
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
@@ -124,9 +115,10 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 int main(int argc, char **argv) {
     srand(time(0));
-    int width  = 600;
-    int height = 600;
-
+    int width  = 1200;
+    int height = 1100;
+    awidth = width;
+    aheight = height;
     window = initGLFW(width, height);
 
     initGL (window, width, height);
@@ -159,9 +151,9 @@ bool detect_collision(bounding_box_t a, bounding_box_t b) {
 }
 
 void reset_screen() {
-    float top    = screen_center_y + 4 / screen_zoom;
-    float bottom = screen_center_y - 4 / screen_zoom;
-    float left   = screen_center_x - 4 / screen_zoom;
-    float right  = screen_center_x + 4 / screen_zoom;
-    Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
+    float top    = screen_center_y + window_size / screen_zoom;
+    float bottom = screen_center_y - window_size / screen_zoom;
+    float left   = screen_center_x - window_size / screen_zoom;
+    float right  = screen_center_x + window_size / screen_zoom;
+    Matrices.projection = glm::perspective(glm::radians(90.0f), (float)awidth /(float)aheight , 0.1f, 500.0f);
 }
