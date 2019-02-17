@@ -9,7 +9,7 @@ public:
     Plane() {}
     Plane(glm::vec3 pos, glm::vec3 dim, color_t color);
     glm::vec3 position;
-    float rotation, l, b, h;
+    float rx, l, b, h, ry, rz, fuel, speed;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
     void tick(int sn);

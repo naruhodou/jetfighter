@@ -75,6 +75,8 @@ cuboid.h
 /home/escanor/workarea/graphics/jetfighter/src/cuboid.h
 arrow.h
 /home/escanor/workarea/graphics/jetfighter/src/arrow.h
+volcano.h
+/home/escanor/workarea/graphics/jetfighter/src/volcano.h
 
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 iostream
@@ -157,4 +159,14 @@ GLFW/glfw3.h
 -
 
 /home/escanor/workarea/graphics/jetfighter/src/timer.h
+
+/home/escanor/workarea/graphics/jetfighter/src/volcano.cpp
+volcano.h
+/home/escanor/workarea/graphics/jetfighter/src/volcano.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+
+/home/escanor/workarea/graphics/jetfighter/src/volcano.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
 
