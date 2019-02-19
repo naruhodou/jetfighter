@@ -20,7 +20,8 @@ Plane player;
 Cuboid lake, altitude_tracker, speed_tracker, fuel_tracker;
 Arrow direct_player;
 vector <Volcano> volcanoes;
-
+int plane_view, top_view, tower_view, follow_cam = 1, helicopter_view;
+glm :: vec3 set_tower_view = {0, 0, 0};
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0, diff = 10;
 float camera_rotation_angle = 90;
 int window_size = 20, awidth, aheight, sync_arrow = 80, global_timestamp = 0;
@@ -37,9 +38,38 @@ void draw() {
     glUseProgram (programID);
 
     // Eye - Location of camera. Don't change unless you are sure!!
-    glm::vec3 eye (player.position.x, player.position.y + 4, player.position.z + 6);
+    glm::vec3 eye;
+    if(plane_view)
+    {
+        eye = {player.position.x, player.position.y, player.position.z - 5 * player.h / 4};
+    }
+    else if(top_view)
+    {
+        eye = player.position;
+        eye.y += 5;
+        eye.z += 3;
+    }
+    if(follow_cam)
+    {
+        eye = {player.position.x, player.position.y + 4, player.position.z + 6};
+    }
+    if(tower_view)
+    {
+        if(abs(set_tower_view.x) + abs(set_tower_view.y) + abs(set_tower_view.z) < 0.01)
+        {
+            set_tower_view = player.position;
+            set_tower_view.x -= 5;
+            set_tower_view.y += 10;
+        }
+        eye = set_tower_view;
+    }
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
     glm::vec3 target (player.position.x, player.position.y, player.position.z);
+    if(plane_view)
+    {
+        target = eye;
+        target.z -= 10;
+    }
     // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
 
@@ -79,6 +109,39 @@ void tick_input(GLFWwindow *window) {
     int rrotate = glfwGetKey(window, GLFW_KEY_D);
     int ltilt = glfwGetKey(window, GLFW_KEY_Z);
     int rtilt = glfwGetKey(window, GLFW_KEY_C);
+    if(!plane_view)
+    {
+        plane_view = glfwGetKey(window, GLFW_KEY_1);
+        if(plane_view)
+        {
+            tower_view = top_view = follow_cam = helicopter_view = 0;
+        }
+    }
+    if(!top_view)
+    {
+        top_view = glfwGetKey(window, GLFW_KEY_2);
+        if(top_view)
+        {
+            plane_view = tower_view = follow_cam = helicopter_view = 0;
+        }
+    }
+    if(!follow_cam)
+    {
+        follow_cam = glfwGetKey(window, GLFW_KEY_3);
+        if(follow_cam)
+        {
+            plane_view = tower_view = top_view = helicopter_view = 0;
+        }
+    }
+    if(!tower_view)
+    {
+        tower_view = glfwGetKey(window, GLFW_KEY_4);
+        set_tower_view = {0, 0, 0};
+        if(tower_view)
+        {
+            plane_view = top_view = follow_cam = helicopter_view = 0;
+        }
+    }
     if(forward)
     {
         player.tick(1);
