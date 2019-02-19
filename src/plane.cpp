@@ -105,6 +105,8 @@ void Plane::tick(int sn) {
     // this->rotation += 10 * speed;
     // this->position.x -= speed;
     // this->position.y -= speed;
+    if(this->fuel < 0)
+        this->fuel = 0;
     if(sn == 1)
     {
         //forward
@@ -118,7 +120,7 @@ void Plane::tick(int sn) {
         //backward
         float angle = this -> ry;
         this -> position.z += 0.1 * cos(M_PI * angle / 180);
-        this -> position.x -= 0.1 * sin(M_PI * angle / 180);
+        this -> position.x += 0.1 * sin(M_PI * angle / 180);
         this -> speed = 0.1;
     }
     else if(sn == 2)

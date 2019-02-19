@@ -5,6 +5,7 @@ Cuboid::Cuboid(glm::vec3 pos, glm::vec3 dim, float rot, color_t color) {
     this->position = pos;
     this->rotation = rot;
     float length = dim.x, width = dim.y, depth = dim.z;
+    this->vel = 0;
     // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
     // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
     GLfloat vertex_buffer_data[] = 

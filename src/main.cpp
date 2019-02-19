@@ -72,7 +72,8 @@ void draw() {
     if(plane_view)
     {
         target = eye;
-        target.z -= 10;
+        target.z -= 10 * cos(M_PI * player.ry / 180);
+        target.x -= 10 * sin(M_PI * player.ry / 180);
     }
     // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
@@ -91,12 +92,6 @@ void draw() {
     // For each model you render, since the MVP will be different (at least the M part)
     // Don't change unless you are sure!!
     glm::mat4 MVP;  // MVP = Projection * View * Model
-    if(global_timestamp == 1)
-    {
-        for(int i = 0; i < 4; i++, cout << '\n')
-            for(int j = 0; j < 4; j++, cout << ' ')
-                cout << VP[i][j];
-    }
     // Scene render
     player.draw(VP);
     if(direct_player.isdraw)
@@ -104,9 +99,9 @@ void draw() {
     lake.draw(VP);
     for(auto x : volcanoes)
         x.draw(VP);
-    altitude_tracker.draw(VP);
-    speed_tracker.draw(VP);
-    fuel_tracker.draw(VP);
+    altitude_tracker.draw({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
+    speed_tracker.draw({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
+    fuel_tracker.draw({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
     if(enemy1.isdraw)
         enemy1.draw(VP);
     for(auto x : missiles)
@@ -126,7 +121,7 @@ void tick_input(GLFWwindow *window) {
     int fire = glfwGetKey(window, GLFW_KEY_F);
     if(fire)
     {
-        missiles.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {4, 2, 2}, 0, COLOR_RED));
+        missiles.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {0.5, 0.5, 1.5}, 0, COLOR_RED));
     }
     if(sbr)
         start_barrel_roll = global_timestamp;
@@ -207,39 +202,19 @@ void tick_input(GLFWwindow *window) {
 //altitude bar
 void handle_altitude()
 {
-    float unit_length = 0.05;
-    if(follow_cam)
-        altitude_tracker = Cuboid({player.position.x - 15 + (unit_length * player.position.y) / 2, player.position.y + 5, player.position.z - 20.0f}, {unit_length * player.position.y, 1, 0.01}, 0, COLOR_BLACK);
-    if(top_view)
-        altitude_tracker = Cuboid({player.position.x - 15.8 + (unit_length * player.position.y) / 2, player.position.y, player.position.z - 15}, {unit_length * player.position.y, 1, 0.01}, 90, COLOR_BLACK);
-    if(plane_view)
-        altitude_tracker = Cuboid({player.position.x - 15 + (unit_length * player.position.y) / 2, player.position.y + 10, player.position.z - 40.0f}, {unit_length * player.position.y, 1, 0.01}, 0, COLOR_BLACK);
-    if(tower_view)
-        altitude_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
+    float unit_length = 0.005;
+    altitude_tracker = Cuboid({-0.8 + (unit_length * player.position.y) / 2, 0.7, 0}, {unit_length * player.position.y, 0.05, 0}, 0, COLOR_BLACK);
 }
 //speed handler
 void handle_speed()
 {
-    float unit_length = 20;
-    if(follow_cam)
-        speed_tracker = Cuboid({player.position.x - 15.1 + (unit_length * player.speed) / 2, player.position.y + 3, player.position.z - 20.0f}, {unit_length * player.speed, 1, 0.01}, 0, COLOR_DEEPBLUE);
-    if(top_view)
-        speed_tracker = Cuboid({player.position.x - 15 + (unit_length * player.speed) / 2, player.position.y + 1, player.position.z - 13}, {unit_length * player.speed, 1, 0.01}, 90, COLOR_DEEPBLUE);
-    if(plane_view)
-        speed_tracker = Cuboid({player.position.x - 15 + (unit_length * player.speed) / 2, player.position.y + 8, player.position.z - 40.0f}, {unit_length * player.speed, 1, 0.01}, 0, COLOR_DEEPBLUE);
-    if(tower_view)
-        speed_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
+    float unit_length = 1;
+    speed_tracker = Cuboid({-0.8 + (unit_length * player.speed) / 2, 0.6, 0}, {unit_length * player.speed, 0.05, 0}, 0, COLOR_DEEPBLUE);
 }
 void handle_fuel()
 {
-    float unit_length = 0.08;
-    fuel_tracker = Cuboid({player.position.x - 15.2 + (unit_length * player.fuel) / 2, player.position.y + 1, player.position.z - 20.0f}, {unit_length * player.fuel, 1, 0.01}, 0, COLOR_FUEL);
-    if(top_view)
-        fuel_tracker = Cuboid({player.position.x - 14.2 + (unit_length * player.fuel) / 2, player.position.y + 2, player.position.z - 11}, {unit_length * player.fuel, 1, 0.01}, 90, COLOR_FUEL);
-    if(plane_view)
-        fuel_tracker = Cuboid({player.position.x - 15 + (unit_length * player.fuel) / 2, player.position.y + 6, player.position.z - 40}, {unit_length * player.fuel, 1, 0.01}, 0, COLOR_FUEL);
-    if(tower_view)
-        fuel_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
+    float unit_length = 0.004;
+    fuel_tracker = Cuboid({-0.8 + (unit_length * player.fuel) / 2, 0.5, 0}, {unit_length * player.fuel, 0.05, 0}, 0, COLOR_FUEL);
 }
 //dashboard_handler
 void dashboard_handler()
@@ -254,7 +229,19 @@ void dashboard_handler()
 //missile movement
 void miss_move()
 {
-    
+    for(int i = 0; i < missiles.size(); i++)
+    {
+        missiles[i].position.z -= 0.3 * cos(M_PI * player.ry / 180);
+        missiles[i].position.x -= 0.3 * sin(M_PI * player.ry / 180);
+        float fv = missiles[i].vel - 1.0f / 6.0f;
+        missiles[i].position.y = missiles[i].position.y + (missiles[i].vel * missiles[i].vel - fv * fv) / 20.0f;
+        missiles[i].vel = fv;
+    }
+    vector <Cuboid> temp;
+    for(int i = 0; i < missiles.size(); i++)
+        if(missiles[i].position.y > 0)
+            temp.push_back(missiles[i]);
+    missiles = temp;
 }
 
 void tick_elements() {
