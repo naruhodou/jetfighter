@@ -177,6 +177,33 @@ src/ball.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/ball.cpp.s
 .PHONY : src/ball.cpp.s
 
+src/canon.o: src/canon.cpp.o
+
+.PHONY : src/canon.o
+
+# target to build an object file
+src/canon.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/canon.cpp.o
+.PHONY : src/canon.cpp.o
+
+src/canon.i: src/canon.cpp.i
+
+.PHONY : src/canon.i
+
+# target to preprocess a source file
+src/canon.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/canon.cpp.i
+.PHONY : src/canon.cpp.i
+
+src/canon.s: src/canon.cpp.s
+
+.PHONY : src/canon.s
+
+# target to generate assembly for a file
+src/canon.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/canon.cpp.s
+.PHONY : src/canon.cpp.s
+
 src/color.o: src/color.cpp.o
 
 .PHONY : src/color.o
@@ -435,6 +462,9 @@ help:
 	@echo "... src/ball.o"
 	@echo "... src/ball.i"
 	@echo "... src/ball.s"
+	@echo "... src/canon.o"
+	@echo "... src/canon.i"
+	@echo "... src/canon.s"
 	@echo "... src/color.o"
 	@echo "... src/color.i"
 	@echo "... src/color.s"

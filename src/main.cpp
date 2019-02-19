@@ -5,6 +5,7 @@
 #include "cuboid.h"
 #include "arrow.h"
 #include "volcano.h"
+#include "canon.h"
 
 using namespace std;
 
@@ -19,12 +20,15 @@ GLFWwindow *window;
 Plane player;
 Cuboid lake, altitude_tracker, speed_tracker, fuel_tracker;
 Arrow direct_player;
+Canon enemy1;
 vector <Volcano> volcanoes;
+vector <Cuboid> missiles;
 int plane_view, top_view, tower_view, follow_cam = 1, helicopter_view;
 glm :: vec3 set_tower_view = {0, 0, 0};
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0, diff = 10;
 float camera_rotation_angle = 90;
-int window_size = 20, awidth, aheight, sync_arrow = 80, global_timestamp = 0;
+int window_size = 20, awidth, aheight, sync_arrow = 80, start_barrel_roll;
+long long global_timestamp = 0;
 Timer t60(1.0 / 60);
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -46,7 +50,7 @@ void draw() {
     else if(top_view)
     {
         eye = player.position;
-        eye.y += 5;
+        eye.y += 20;
         eye.z += 3;
     }
     if(follow_cam)
@@ -87,7 +91,12 @@ void draw() {
     // For each model you render, since the MVP will be different (at least the M part)
     // Don't change unless you are sure!!
     glm::mat4 MVP;  // MVP = Projection * View * Model
-
+    if(global_timestamp == 1)
+    {
+        for(int i = 0; i < 4; i++, cout << '\n')
+            for(int j = 0; j < 4; j++, cout << ' ')
+                cout << VP[i][j];
+    }
     // Scene render
     player.draw(VP);
     if(direct_player.isdraw)
@@ -98,6 +107,10 @@ void draw() {
     altitude_tracker.draw(VP);
     speed_tracker.draw(VP);
     fuel_tracker.draw(VP);
+    if(enemy1.isdraw)
+        enemy1.draw(VP);
+    for(auto x : missiles)
+        x.draw(VP);
 }
 
 void tick_input(GLFWwindow *window) {
@@ -109,6 +122,14 @@ void tick_input(GLFWwindow *window) {
     int rrotate = glfwGetKey(window, GLFW_KEY_D);
     int ltilt = glfwGetKey(window, GLFW_KEY_Z);
     int rtilt = glfwGetKey(window, GLFW_KEY_C);
+    int sbr = glfwGetKey(window, GLFW_KEY_L);
+    int fire = glfwGetKey(window, GLFW_KEY_F);
+    if(fire)
+    {
+        missiles.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {4, 2, 2}, 0, COLOR_RED));
+    }
+    if(sbr)
+        start_barrel_roll = global_timestamp;
     if(!plane_view)
     {
         plane_view = glfwGetKey(window, GLFW_KEY_1);
@@ -187,18 +208,38 @@ void tick_input(GLFWwindow *window) {
 void handle_altitude()
 {
     float unit_length = 0.05;
-    altitude_tracker = Cuboid({player.position.x - 10, player.position.y + 5, player.position.z - 20.0f}, {unit_length * player.position.y, 1, 0.01}, 0, COLOR_BLACK);
+    if(follow_cam)
+        altitude_tracker = Cuboid({player.position.x - 15 + (unit_length * player.position.y) / 2, player.position.y + 5, player.position.z - 20.0f}, {unit_length * player.position.y, 1, 0.01}, 0, COLOR_BLACK);
+    if(top_view)
+        altitude_tracker = Cuboid({player.position.x - 15.8 + (unit_length * player.position.y) / 2, player.position.y, player.position.z - 15}, {unit_length * player.position.y, 1, 0.01}, 90, COLOR_BLACK);
+    if(plane_view)
+        altitude_tracker = Cuboid({player.position.x - 15 + (unit_length * player.position.y) / 2, player.position.y + 10, player.position.z - 40.0f}, {unit_length * player.position.y, 1, 0.01}, 0, COLOR_BLACK);
+    if(tower_view)
+        altitude_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
 }
 //speed handler
 void handle_speed()
 {
     float unit_length = 20;
-    speed_tracker = Cuboid({player.position.x - 10, player.position.y + 3, player.position.z - 20.0f}, {unit_length * player.speed, 1, 0.01}, 0, COLOR_DEEPBLUE);
+    if(follow_cam)
+        speed_tracker = Cuboid({player.position.x - 15.1 + (unit_length * player.speed) / 2, player.position.y + 3, player.position.z - 20.0f}, {unit_length * player.speed, 1, 0.01}, 0, COLOR_DEEPBLUE);
+    if(top_view)
+        speed_tracker = Cuboid({player.position.x - 15 + (unit_length * player.speed) / 2, player.position.y + 1, player.position.z - 13}, {unit_length * player.speed, 1, 0.01}, 90, COLOR_DEEPBLUE);
+    if(plane_view)
+        speed_tracker = Cuboid({player.position.x - 15 + (unit_length * player.speed) / 2, player.position.y + 8, player.position.z - 40.0f}, {unit_length * player.speed, 1, 0.01}, 0, COLOR_DEEPBLUE);
+    if(tower_view)
+        speed_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
 }
 void handle_fuel()
 {
     float unit_length = 0.08;
-    fuel_tracker = Cuboid({player.position.x - 10, player.position.y + 1, player.position.z - 20.0f}, {unit_length * player.fuel, 1, 0.01}, 0, COLOR_BLACK);
+    fuel_tracker = Cuboid({player.position.x - 15.2 + (unit_length * player.fuel) / 2, player.position.y + 1, player.position.z - 20.0f}, {unit_length * player.fuel, 1, 0.01}, 0, COLOR_FUEL);
+    if(top_view)
+        fuel_tracker = Cuboid({player.position.x - 14.2 + (unit_length * player.fuel) / 2, player.position.y + 2, player.position.z - 11}, {unit_length * player.fuel, 1, 0.01}, 90, COLOR_FUEL);
+    if(plane_view)
+        fuel_tracker = Cuboid({player.position.x - 15 + (unit_length * player.fuel) / 2, player.position.y + 6, player.position.z - 40}, {unit_length * player.fuel, 1, 0.01}, 0, COLOR_FUEL);
+    if(tower_view)
+        fuel_tracker = Cuboid({-10000, -100000, -100000}, {0, 0, 0}, 0, COLOR_FUEL);
 }
 //dashboard_handler
 void dashboard_handler()
@@ -210,11 +251,24 @@ void dashboard_handler()
         handle_fuel();
 }
 
+//missile movement
+void miss_move()
+{
+    
+}
+
 void tick_elements() {
     
     //always happening
     global_timestamp++;
+    miss_move();
     dashboard_handler();
+    if(global_timestamp - start_barrel_roll < 60 && start_barrel_roll)
+    {
+        player.rz += 5.6;
+    }
+    else
+        start_barrel_roll = 0;
     if(!direct_player.isdraw && global_timestamp % 100 == 0)
     {
         direct_player.isdraw = true;
@@ -255,6 +309,8 @@ void initGL(GLFWwindow *window, int width, int height) {
     player      = Plane({0, 10, 0}, {2, 1, 8}, COLOR_GREEN);
     lake      = Cuboid({player.position.x, player.position.y - diff, player.position.z}, {1000, 1, 1000}, 0, COLOR_BLUE);
     direct_player = Arrow({0, 10, -40}, COLOR_RED);
+    enemy1 = Canon({0, 1, -40}, 0);
+    
     for(int i = 1; i <= 2; i++)
     {
         volcanoes.push_back(Volcano({10 * i + player.position.x, 2, player.position.z - 20 * i}, {7, 3, 7}, COLOR_ORANGE));

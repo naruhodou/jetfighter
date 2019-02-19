@@ -26,6 +26,18 @@ main.h
 main.h
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 
+/home/escanor/workarea/graphics/jetfighter/src/canon.cpp
+canon.h
+/home/escanor/workarea/graphics/jetfighter/src/canon.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+
+/home/escanor/workarea/graphics/jetfighter/src/canon.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+cuboid.h
+/home/escanor/workarea/graphics/jetfighter/src/cuboid.h
+
 /home/escanor/workarea/graphics/jetfighter/src/color.cpp
 main.h
 /home/escanor/workarea/graphics/jetfighter/src/main.h
@@ -77,6 +89,8 @@ arrow.h
 /home/escanor/workarea/graphics/jetfighter/src/arrow.h
 volcano.h
 /home/escanor/workarea/graphics/jetfighter/src/volcano.h
+canon.h
+/home/escanor/workarea/graphics/jetfighter/src/canon.h
 
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 iostream

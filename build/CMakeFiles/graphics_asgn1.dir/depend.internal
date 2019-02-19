@@ -9,6 +9,11 @@ CMakeFiles/graphics_asgn1.dir/src/ball.cpp.o
  /home/escanor/workarea/graphics/jetfighter/src/ball.cpp
  /home/escanor/workarea/graphics/jetfighter/src/ball.h
  /home/escanor/workarea/graphics/jetfighter/src/main.h
+CMakeFiles/graphics_asgn1.dir/src/canon.cpp.o
+ /home/escanor/workarea/graphics/jetfighter/src/canon.cpp
+ /home/escanor/workarea/graphics/jetfighter/src/canon.h
+ /home/escanor/workarea/graphics/jetfighter/src/cuboid.h
+ /home/escanor/workarea/graphics/jetfighter/src/main.h
 CMakeFiles/graphics_asgn1.dir/src/color.cpp.o
  /home/escanor/workarea/graphics/jetfighter/src/color.cpp
  /home/escanor/workarea/graphics/jetfighter/src/main.h
@@ -22,6 +27,7 @@ CMakeFiles/graphics_asgn1.dir/src/input.cpp.o
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o
  /home/escanor/workarea/graphics/jetfighter/src/arrow.h
  /home/escanor/workarea/graphics/jetfighter/src/ball.h
+ /home/escanor/workarea/graphics/jetfighter/src/canon.h
  /home/escanor/workarea/graphics/jetfighter/src/cuboid.h
  /home/escanor/workarea/graphics/jetfighter/src/main.cpp
  /home/escanor/workarea/graphics/jetfighter/src/main.h
