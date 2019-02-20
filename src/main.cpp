@@ -219,9 +219,9 @@ void tick_input(GLFWwindow *window) {
 }
 void reset_game()
 {
-    player.position = {0, 10, 0};
-    player.fuel = 80;
-    player.speed = 0;
+    player      = Plane({0, 10, 0}, {2, 1, 8}, COLOR_GREEN);
+    volcanoes.clear();
+    enemy1.isdraw = enemy2.isdraw = direct_player.isdraw = false;
 }
 //altitude bar
 void handle_altitude()
@@ -342,6 +342,24 @@ void bomb_move()
     bombs = temp;
 }
 
+//volcano no fly zone
+void handle_volcano()
+{
+    vector <glm::vec2> corners = {{player.position.x, player.position.z - 5 * player.l / 4}, {player.position.x - player.l / 2, player.position.z}, {player.position.x - 3 * player.l / 2, player.position.z}, {player.position.x + player.l / 2, player.position.z}, {player.position.x + 3 * player.l / 2, player.position.z}};
+    for(int i = 0; i < volcanoes.size(); i++)
+    {
+        for(int j = 0; j < corners.size(); j++)
+        {
+            cout << (corners[j].x - volcanoes[i].position.x) * (corners[j].x - volcanoes[i].position.x) + (corners[j].y - volcanoes[i].position.z) * (corners[j].y - volcanoes[i].position.z) << endl;
+            if((corners[j].x - volcanoes[i].position.x) * (corners[j].x - volcanoes[i].position.x) + (corners[j].y - volcanoes[i].position.z) * (corners[j].y - volcanoes[i].position.z) < volcanoes[i].tradius * volcanoes[i].tradius)
+            {
+                reset_game();
+                return;
+            }
+        }
+    }
+}
+
 void tick_elements() {
     
     //always happening
@@ -349,6 +367,7 @@ void tick_elements() {
     miss_move();
     bomb_move();
     enemy2_move();
+    handle_volcano();
     dashboard_handler();
     if(player.fuel < 0.1 || player.position.y < 0.5)
     {
