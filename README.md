@@ -1,11 +1,20 @@
-Graphics Boilerplate Code
+Jetfighter (Graphics Assignment 2)
 =========================
 
-This is boilerplate code for the assignments which might be helpful.
-
-
-License
--------
-The MIT License https://meghprkh.mit-license.org/
-
-Copyright &copy; 2018 Megh Parikh <meghprkh@gmail.com>
+-Controls
+    - Forward motion: W
+    - Backward motion: S
+    - Left turn: A
+    - Right turn: D
+    - Anti-clockwise tilt: Z
+    - Clockwise tilt: C
+    - Increase height: SPACE
+    - Decrease height: DOWN arrow key
+    - Missile shooting: LEFT MOUSE CLICK
+    - Bombs: RIGHT MOUSE CLICK
+    - Plane view: 1
+    - Tower view: 2
+    - Follow-cam view: 3
+    - Tower view: 4
+    - Helicopter view: 5
+    - Barrel roll: L
