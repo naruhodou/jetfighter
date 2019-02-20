@@ -30,6 +30,7 @@ CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/canon.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/cuboid.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/main.h
+CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/parachute.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/plane.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/timer.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: ../src/volcano.h
@@ -39,6 +40,11 @@ CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o: ../src/nonedit.cpp
 
 CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o: ../src/main.h
 CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o: ../src/other_handlers.cpp
+
+CMakeFiles/graphics_asgn1.dir/src/parachute.cpp.o: ../src/cuboid.h
+CMakeFiles/graphics_asgn1.dir/src/parachute.cpp.o: ../src/main.h
+CMakeFiles/graphics_asgn1.dir/src/parachute.cpp.o: ../src/parachute.cpp
+CMakeFiles/graphics_asgn1.dir/src/parachute.cpp.o: ../src/parachute.h
 
 CMakeFiles/graphics_asgn1.dir/src/plane.cpp.o: ../src/main.h
 CMakeFiles/graphics_asgn1.dir/src/plane.cpp.o: ../src/plane.cpp

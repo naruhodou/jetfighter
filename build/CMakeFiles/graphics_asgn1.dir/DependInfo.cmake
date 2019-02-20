@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/escanor/workarea/graphics/jetfighter/src/main.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/main.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/nonedit.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/other_handlers.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/parachute.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/parachute.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/plane.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/plane.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/timer.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/volcano.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/volcano.cpp.o"

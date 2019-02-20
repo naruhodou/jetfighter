@@ -91,6 +91,8 @@ volcano.h
 /home/escanor/workarea/graphics/jetfighter/src/volcano.h
 canon.h
 /home/escanor/workarea/graphics/jetfighter/src/canon.h
+parachute.h
+/home/escanor/workarea/graphics/jetfighter/src/parachute.h
 
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 iostream
@@ -155,6 +157,18 @@ glm/gtc/matrix_transform.hpp
 -
 main.h
 /home/escanor/workarea/graphics/jetfighter/src/main.h
+
+/home/escanor/workarea/graphics/jetfighter/src/parachute.cpp
+parachute.h
+/home/escanor/workarea/graphics/jetfighter/src/parachute.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+
+/home/escanor/workarea/graphics/jetfighter/src/parachute.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+cuboid.h
+/home/escanor/workarea/graphics/jetfighter/src/cuboid.h
 
 /home/escanor/workarea/graphics/jetfighter/src/plane.cpp
 plane.h

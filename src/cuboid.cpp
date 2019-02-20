@@ -4,6 +4,7 @@
 Cuboid::Cuboid(glm::vec3 pos, glm::vec3 dim, float rot, color_t color) {
     this->position = pos;
     this->rotation = rot;
+    this->rz = 0;
     float length = dim.x, width = dim.y, depth = dim.z;
     this->vel = 0;
     // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
@@ -62,6 +63,7 @@ void Cuboid::draw(glm::mat4 VP) {
     // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
     // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
     Matrices.model *= (translate * rotate);
+    Matrices.model *= (glm::rotate((float) (this->rz * M_PI / 180.0f), glm::vec3(0, 0, 1)));
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object);

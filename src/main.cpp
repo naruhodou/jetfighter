@@ -6,6 +6,7 @@
 #include "arrow.h"
 #include "volcano.h"
 #include "canon.h"
+#include "parachute.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ Plane player;
 Cuboid lake, altitude_tracker, speed_tracker, fuel_tracker;
 Arrow direct_player;
 Canon enemy1;
+Parachute enemy2;
 vector <Volcano> volcanoes;
 vector <Cuboid> missiles, bombs;
 int plane_view, top_view, tower_view, follow_cam = 1, helicopter_view;
@@ -110,6 +112,8 @@ void draw() {
         x.draw(VP);
     for(int i = 0; i < bombs.size(); i++)
         bombs[i].draw(VP);
+    if(enemy2.isdraw)
+        enemy2.draw(VP);
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -213,7 +217,12 @@ void tick_input(GLFWwindow *window) {
     if(!forward && !back)
         player.tick(0);
 }
-
+void reset_game()
+{
+    player.position = {0, 10, 0};
+    player.fuel = 80;
+    player.speed = 0;
+}
 //altitude bar
 void handle_altitude()
 {
@@ -228,7 +237,7 @@ void handle_speed()
 }
 void handle_fuel()
 {
-    float unit_length = 0.004;
+    float unit_length = 0.002 ;
     fuel_tracker = Cuboid({-0.8 + (unit_length * player.fuel) / 2, 0.5, 0}, {unit_length * player.fuel, 0.05, 0}, 0, COLOR_FUEL);
 }
 //dashboard_handler
@@ -240,6 +249,21 @@ void dashboard_handler()
     if(player.fuel > 0)
         handle_fuel();
 }
+
+//enemy2 movement
+void enemy2_move()
+{
+    if(enemy2.position.y < 1)
+    {
+        enemy2.isdraw = false;
+        return;
+    }
+    if(global_timestamp % 60 >= 15 && global_timestamp < 45)
+        enemy2.tick(1);
+    else
+        enemy2.tick(-1);
+}
+
 
 //missile movement
 void miss_move()
@@ -258,11 +282,22 @@ void miss_move()
         float d1 = abs(enemy1.position.x - missiles[i].position.x);
         float d2 = abs(enemy1.position.y - missiles[i].position.y);
         float d3 = abs(enemy1.position.z - missiles[i].position.z);
-        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 0.5) < 1 && abs(2 * d3 - 1.5) < 1)
+        bool c1 = 0, c2 = 0;
+        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 0.5) < 1 && abs(2 * d3 - 1.5) < 1 && enemy1.isdraw)
         {
             enemy1.isdraw = false;
-            continue;
+            c1 = 1;
         }
+        d1 = abs(enemy2.position.x - missiles[i].position.x);
+        d2 = abs(enemy2.position.y - missiles[i].position.y);
+        d3 = abs(enemy2.position.z - missiles[i].position.z);
+        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 2.5) < 1 && abs(2 * d3 - 0.5) < 1 && enemy2.isdraw)
+        {
+            enemy2.isdraw = false;
+            c2 = 1;
+        }
+        if(c1 || c2)
+            continue;
         if(missiles[i].position.y > 0)
             temp.push_back(missiles[i]);
     }
@@ -285,12 +320,22 @@ void bomb_move()
         float d1 = abs(enemy1.position.x - bombs[i].position.x);
         float d2 = abs(enemy1.position.y - bombs[i].position.y);
         float d3 = abs(enemy1.position.z - bombs[i].position.z);
-        cout << abs(2 * d1 - 0.2) << " " << abs(2 * d2 - 0.2) << " " << abs(2 * d3 - 1.2) << endl; 
-        if(abs(2 * d1 - 0.2) < 1 && abs(2 * d2 - 0.2) < 1 && abs(2 * d3 - 0.2) < 1)
+        bool c1 = 0, c2 = 0;
+        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 0.5) < 1 && abs(2 * d3 - 1.5) < 1 && enemy1.isdraw)
         {
             enemy1.isdraw = false;
-            continue;
+            c1 = 1;
         }
+        d1 = abs(enemy2.position.x - bombs[i].position.x);
+        d2 = abs(enemy2.position.y - bombs[i].position.y);
+        d3 = abs(enemy2.position.z - bombs[i].position.z);
+        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 2.5) < 1 && abs(2 * d3 - 0.5) < 1 && enemy2.isdraw)
+        {
+            enemy2.isdraw = false;
+            c2 = 1;
+        }
+        if(c1 || c2)
+            continue;
         if(bombs[i].position.y > 0)
             temp.push_back(bombs[i]);
     }
@@ -303,7 +348,12 @@ void tick_elements() {
     global_timestamp++;
     miss_move();
     bomb_move();
+    enemy2_move();
     dashboard_handler();
+    if(player.fuel < 0.1 || player.position.y < 0.5)
+    {
+        reset_game();
+    }
     if(global_timestamp - start_barrel_roll < 60 && start_barrel_roll)
     {
         player.rz += 5.6;
@@ -327,6 +377,11 @@ void tick_elements() {
                 volcanoes.push_back(Volcano({player.position.x - 30 * i, 2, player.position.z - 25 * i}, {7, 3, 7}, COLOR_ORANGE));
             }
         }
+    }
+    if(!enemy2.isdraw && global_timestamp % 400 == 0)
+    {
+        enemy2 = Parachute({player.position.x, player.position.y + 5, player.position.z - 50});
+        enemy2.isdraw = true;
     }
     if(global_timestamp % sync_arrow < sync_arrow / 2)
     {
@@ -359,7 +414,9 @@ void initGL(GLFWwindow *window, int width, int height) {
     lake      = Cuboid({player.position.x, player.position.y - diff, player.position.z}, {1000, 1, 1000}, 0, COLOR_BLUE);
     direct_player = Arrow({0, 10, -40}, COLOR_RED);
     enemy1 = Canon({0, 1, -40}, 0);
-    
+    enemy2 = Parachute({0, 10, -60});
+
+
     for(int i = 1; i <= 2; i++)
     {
         volcanoes.push_back(Volcano({10 * i + player.position.x, 2, player.position.z - 20 * i}, {7, 3, 7}, COLOR_ORANGE));

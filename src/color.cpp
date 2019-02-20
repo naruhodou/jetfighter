@@ -9,3 +9,5 @@ const color_t COLOR_ORANGE = {244, 114, 7};
 const color_t COLOR_DEEPBLUE = {2, 87, 224};
 const color_t COLOR_FUEL = {255, 191, 2};
 const color_t COLOR_DEEPGREEN = {1, 48, 5};
+const color_t COLOR_PURPLE = {163, 4, 237};
+const color_t COLOR_YELLOW = {247, 241, 86};

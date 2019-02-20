@@ -6,7 +6,7 @@ Canon::Canon(glm::vec3 pos, float rotation) {
     this->rotation = rotation;
     this->isdraw = true;
     this->lower = Cuboid(this->position, {5, 2, 5}, 0, COLOR_DEEPGREEN);
-    this->upper = Cuboid({pos.x, pos.y + 1, pos.z}, {2, 4, 1}, 0, COLOR_GREEN);
+    this->upper = Cuboid({pos.x, pos.y + 1, pos.z}, {2, 4, 1}, rotation, COLOR_GREEN);
     // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
     // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 }

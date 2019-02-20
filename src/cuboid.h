@@ -10,6 +10,7 @@ public:
     Cuboid(glm::vec3 pos, glm::vec3 dimensions, float rot, color_t color);
     glm::vec3 position;
     float rotation, vel;
+    float rz;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
 private:
