@@ -7,6 +7,7 @@
 #include "volcano.h"
 #include "canon.h"
 #include "parachute.h"
+#include "compass.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 Plane player;
+Compass c1;
 Cuboid lake, altitude_tracker, speed_tracker, fuel_tracker;
 Arrow direct_player;
 Canon enemy1;
@@ -31,7 +33,14 @@ float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0, diff = 10;
 float camera_rotation_angle = 90;
 int window_size = 20, awidth, aheight, sync_arrow = 80, start_barrel_roll;
 long long global_timestamp = 0;
+double camera_zoom = 1;
 Timer t60(1.0 / 60);
+double gx, gy, hx, hy, px, py;
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+    // Do something
+    camera_zoom += 0.1*yoffset;
+    reset_screen();
+}
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
 void draw() {
@@ -69,7 +78,6 @@ void draw() {
         }
         eye = set_tower_view;
     }
-        
     
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
     glm::vec3 target (player.position.x, player.position.y, player.position.z);
@@ -78,6 +86,16 @@ void draw() {
         target = eye;
         target.z -= 10 * cos(M_PI * player.ry / 180);
         target.x -= 10 * sin(M_PI * player.ry / 180);
+    }
+    if(helicopter_view)
+    {
+        glfwGetCursorPos(window, &gx, &gy);
+        hx += (gx - px) * 90 / awidth;
+        hy -= (gy - py) * 90 / aheight;
+        px = gx;
+        py = gy;
+        eye = glm::vec3(player.position.x + (12 - 8 * camera_zoom) * cos(hx * M_PI / 180) * sin(hy * M_PI / 180), player.position.y + (12 - 8 * camera_zoom) * cos(hy * M_PI / 180), player.position.x + (12 - 8 * camera_zoom) * sin(hx * M_PI / 180) * sin(hy * M_PI / 180));
+        target = player.position;
     }
     // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
@@ -114,6 +132,7 @@ void draw() {
         bombs[i].draw(VP);
     if(enemy2.isdraw)
         enemy2.draw(VP);
+    c1.draw({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -422,6 +441,7 @@ void tick_elements() {
             player.fuel += 75;
         direct_player.isdraw = false;
     }
+    c1.rotation = -player.ry;
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -430,6 +450,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
     player      = Plane({0, 10, 0}, {2, 1, 8}, COLOR_GREEN);
+    c1          = Compass({0.8, -0.8, 0}, 0.1);
     lake      = Cuboid({player.position.x, player.position.y - diff, player.position.z}, {1000, 1, 1000}, 0, COLOR_BLUE);
     direct_player = Arrow({0, 10, -40}, COLOR_RED);
     enemy1 = Canon({0, 1, -40}, 0);

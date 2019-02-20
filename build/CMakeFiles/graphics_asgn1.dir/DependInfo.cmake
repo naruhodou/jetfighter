@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/escanor/workarea/graphics/jetfighter/src/ball.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/ball.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/canon.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/canon.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/color.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/color.cpp.o"
+  "/home/escanor/workarea/graphics/jetfighter/src/compass.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/compass.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/cuboid.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/cuboid.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/input.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/input.cpp.o"
   "/home/escanor/workarea/graphics/jetfighter/src/main.cpp" "/home/escanor/workarea/graphics/jetfighter/build/CMakeFiles/graphics_asgn1.dir/src/main.cpp.o"

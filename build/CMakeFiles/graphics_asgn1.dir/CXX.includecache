@@ -42,6 +42,16 @@ cuboid.h
 main.h
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 
+/home/escanor/workarea/graphics/jetfighter/src/compass.cpp
+compass.h
+/home/escanor/workarea/graphics/jetfighter/src/compass.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+
+/home/escanor/workarea/graphics/jetfighter/src/compass.h
+main.h
+/home/escanor/workarea/graphics/jetfighter/src/main.h
+
 /home/escanor/workarea/graphics/jetfighter/src/cuboid.cpp
 cuboid.h
 /home/escanor/workarea/graphics/jetfighter/src/cuboid.h
@@ -93,6 +103,8 @@ canon.h
 /home/escanor/workarea/graphics/jetfighter/src/canon.h
 parachute.h
 /home/escanor/workarea/graphics/jetfighter/src/parachute.h
+compass.h
+/home/escanor/workarea/graphics/jetfighter/src/compass.h
 
 /home/escanor/workarea/graphics/jetfighter/src/main.h
 iostream
