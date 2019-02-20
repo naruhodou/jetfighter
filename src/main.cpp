@@ -22,7 +22,7 @@ Cuboid lake, altitude_tracker, speed_tracker, fuel_tracker;
 Arrow direct_player;
 Canon enemy1;
 vector <Volcano> volcanoes;
-vector <Cuboid> missiles;
+vector <Cuboid> missiles, bombs;
 int plane_view, top_view, tower_view, follow_cam = 1, helicopter_view;
 glm :: vec3 set_tower_view = {0, 0, 0};
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0, diff = 10;
@@ -67,6 +67,8 @@ void draw() {
         }
         eye = set_tower_view;
     }
+        
+    
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
     glm::vec3 target (player.position.x, player.position.y, player.position.z);
     if(plane_view)
@@ -106,8 +108,17 @@ void draw() {
         enemy1.draw(VP);
     for(auto x : missiles)
         x.draw(VP);
+    for(int i = 0; i < bombs.size(); i++)
+        bombs[i].draw(VP);
 }
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        missiles.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {0.5, 0.5, 1.5}, 0, COLOR_RED));
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+        bombs.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {0.2, 0.2, 0.2}, 0, COLOR_RED));
+}
 void tick_input(GLFWwindow *window) {
     int forward  = glfwGetKey(window, GLFW_KEY_W);
     int back = glfwGetKey(window, GLFW_KEY_S);
@@ -118,11 +129,7 @@ void tick_input(GLFWwindow *window) {
     int ltilt = glfwGetKey(window, GLFW_KEY_Z);
     int rtilt = glfwGetKey(window, GLFW_KEY_C);
     int sbr = glfwGetKey(window, GLFW_KEY_L);
-    int fire = glfwGetKey(window, GLFW_KEY_F);
-    if(fire)
-    {
-        missiles.push_back(Cuboid({player.position.x, player.position.y - 3 * player.b / 4, player.position.z}, {0.5, 0.5, 1.5}, 0, COLOR_RED));
-    }
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     if(sbr)
         start_barrel_roll = global_timestamp;
     if(!plane_view)
@@ -156,6 +163,14 @@ void tick_input(GLFWwindow *window) {
         if(tower_view)
         {
             plane_view = top_view = follow_cam = helicopter_view = 0;
+        }
+    }
+    if(!helicopter_view)
+    {
+        helicopter_view = glfwGetKey(window, GLFW_KEY_5);
+        if(helicopter_view)
+        {
+            plane_view = top_view = follow_cam = tower_view = 0;
         }
     }
     if(forward)
@@ -239,9 +254,47 @@ void miss_move()
     }
     vector <Cuboid> temp;
     for(int i = 0; i < missiles.size(); i++)
+    {
+        float d1 = abs(enemy1.position.x - missiles[i].position.x);
+        float d2 = abs(enemy1.position.y - missiles[i].position.y);
+        float d3 = abs(enemy1.position.z - missiles[i].position.z);
+        if(abs(2 * d1 - 0.5) < 1 && abs(2 * d2 - 0.5) < 1 && abs(2 * d3 - 1.5) < 1)
+        {
+            enemy1.isdraw = false;
+            continue;
+        }
         if(missiles[i].position.y > 0)
             temp.push_back(missiles[i]);
+    }
     missiles = temp;
+}
+
+void bomb_move()
+{
+    for(int i = 0; i < bombs.size(); i++)
+    {
+        bombs[i].position.z -= 0.3 * cos(M_PI * player.ry / 180);
+        bombs[i].position.x -= 0.3 * sin(M_PI * player.ry / 180);
+        float fv = bombs[i].vel - 1.0f / 6.0f;
+        bombs[i].position.y = bombs[i].position.y + (bombs[i].vel * bombs[i].vel - fv * fv) / 20.0f;
+        bombs[i].vel = fv;
+    }
+    vector <Cuboid> temp;
+    for(int i = 0; i < bombs.size(); i++)
+    {
+        float d1 = abs(enemy1.position.x - bombs[i].position.x);
+        float d2 = abs(enemy1.position.y - bombs[i].position.y);
+        float d3 = abs(enemy1.position.z - bombs[i].position.z);
+        cout << abs(2 * d1 - 0.2) << " " << abs(2 * d2 - 0.2) << " " << abs(2 * d3 - 1.2) << endl; 
+        if(abs(2 * d1 - 0.2) < 1 && abs(2 * d2 - 0.2) < 1 && abs(2 * d3 - 0.2) < 1)
+        {
+            enemy1.isdraw = false;
+            continue;
+        }
+        if(bombs[i].position.y > 0)
+            temp.push_back(bombs[i]);
+    }
+    bombs = temp;
 }
 
 void tick_elements() {
@@ -249,6 +302,7 @@ void tick_elements() {
     //always happening
     global_timestamp++;
     miss_move();
+    bomb_move();
     dashboard_handler();
     if(global_timestamp - start_barrel_roll < 60 && start_barrel_roll)
     {
@@ -260,6 +314,8 @@ void tick_elements() {
     {
         direct_player.isdraw = true;
         direct_player.position = {player.position.x, player.position.y, player.position.z - 60};
+        enemy1 = Canon({player.position.x, 1, player.position.z - 60}, 0);
+        enemy1.isdraw = true;
         if(volcanoes.size() < 40)
         {
             for(int i = 1; i <= 2; i++)
@@ -280,7 +336,13 @@ void tick_elements() {
     {
         direct_player.tick(1);
     }
-    if(2 * abs(player.position.z - direct_player.position.z) < player.h && 2 * abs(player.position.x - direct_player.position.x) < player.l)
+    // if(2 * abs(player.position.z - direct_player.position.z) < player.h && 2 * abs(player.position.x - direct_player.position.x) < player.l)
+    // {
+    //     if(direct_player.isdraw)
+    //         player.fuel += 75;
+    //     direct_player.isdraw = false;
+    // }
+    if(!enemy1.isdraw)
     {
         if(direct_player.isdraw)
             player.fuel += 75;
